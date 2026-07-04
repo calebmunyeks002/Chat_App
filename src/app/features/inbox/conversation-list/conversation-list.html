@@ -1,52 +1,37 @@
 <div class="conversation-list">
 
     <div
-        
-    class="conversation"
-    *ngFor="let chat of conversations"
-    [routerLink]="['/dashboard/inbox/chat', chat.id]">
+        *ngFor="let conversation of conversations"
+        class="conversation-card"
+        [routerLink]="['/dashboard/private-chat', conversation.id]">
 
         <img
-            [src]="chat.avatar"
+            [src]="conversation.avatar"
             alt="Avatar">
 
         <div class="details">
 
-            <h3>
+            <div class="top">
 
-                {{chat.name}}
+                <h3>{{ conversation.name }}</h3>
+
+                <span>{{ conversation.lastTime }}</span>
+
+            </div>
+
+            <div class="bottom">
+
+                <p>{{ conversation.lastMessage }}</p>
 
                 <span
-                    class="status"
-                    [class.online]="chat.online">
+                    *ngIf="conversation.unread > 0"
+                    class="badge">
+
+                    {{ conversation.unread }}
 
                 </span>
 
-            </h3>
-
-            <p>
-
-                {{chat.lastMessage}}
-
-            </p>
-
-        </div>
-
-        <div class="meta">
-
-            <small>
-
-                {{chat.time}}
-
-            </small>
-
-            <span
-                *ngIf="chat.unread>0"
-                class="badge">
-
-                {{chat.unread}}
-
-            </span>
+            </div>
 
         </div>
 

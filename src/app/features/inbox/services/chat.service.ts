@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-
 import { ChatMessage } from '../models/chat-message';
 import { Conversation } from '../models/conversation';
 
@@ -8,57 +7,55 @@ import { Conversation } from '../models/conversation';
 })
 export class ChatService {
 
-  constructor() {}
-
-  // ==========================================
+  // ============================================
   // CONVERSATIONS
-  // ==========================================
+  // ============================================
 
   private conversations: Conversation[] = [
 
     {
       id: 1,
       name: 'Kevin Mwangi',
-      avatar: 'https://i.pravatar.cc/150?img=5',
       lastMessage: 'See you tomorrow.',
-      time: '09:40',
+      lastTime: '09:15',
+      unread: 2,
       online: true,
-      unread: 2
+      avatar: 'https://i.pravatar.cc/150?img=5'
     },
 
     {
       id: 2,
-      name: 'Alice Wanjiku',
-      avatar: 'https://i.pravatar.cc/150?img=32',
+      name: 'Alice Wanjiru',
       lastMessage: 'Meeting starts at 2 PM.',
-      time: 'Yesterday',
+      lastTime: 'Yesterday',
+      unread: 0,
       online: false,
-      unread: 0
+      avatar: 'https://i.pravatar.cc/150?img=8'
     },
 
     {
       id: 3,
-      name: 'Brian Otieno',
-      avatar: 'https://i.pravatar.cc/150?img=15',
-      lastMessage: 'Thanks!',
-      time: 'Monday',
+      name: 'Brian Kiptoo',
+      lastMessage: 'Thank you!',
+      lastTime: 'Monday',
+      unread: 5,
       online: true,
-      unread: 1
+      avatar: 'https://i.pravatar.cc/150?img=12'
     }
 
   ];
 
-  // ==========================================
-  // MESSAGES
-  // ==========================================
+  // ============================================
+  // CHAT MESSAGES
+  // ============================================
 
   private messages: ChatMessage[] = [
 
     {
       id: 1,
-      senderId: 2,
-      receiverId: 1,
-      senderName: 'Kevin Mwangi',
+      senderId: 1,
+      receiverId: 2,
+      senderName: 'Kevin',
       message: 'Hello Caleb 👋',
       time: '09:10',
       mine: false,
@@ -67,31 +64,20 @@ export class ChatService {
 
     {
       id: 2,
-      senderId: 1,
-      receiverId: 2,
+      senderId: 2,
+      receiverId: 1,
       senderName: 'Me',
       message: 'Hello Kevin!',
       time: '09:11',
       mine: true,
       status: 'Read'
-    },
-
-    {
-      id: 3,
-      senderId: 2,
-      receiverId: 1,
-      senderName: 'Kevin Mwangi',
-      message: 'How is the FinChat project progressing?',
-      time: '09:13',
-      mine: false,
-      status: 'Read'
     }
 
   ];
 
-  // ==========================================
-  // GETTERS
-  // ==========================================
+  // ============================================
+  // CONVERSATIONS
+  // ============================================
 
   getConversations(): Conversation[] {
 
@@ -99,76 +85,67 @@ export class ChatService {
 
   }
 
-  getMessages(): ChatMessage[] {
+  getConversation(id: number): Conversation | undefined {
 
-    return this.messages;
+    return this.conversations.find(c => c.id === id);
 
   }
 
-  // ==========================================
-  // SEND MESSAGE
-  // ==========================================
+  // ============================================
+  // MESSAGES
+  // ============================================
+
+  getMessages(userId?: number): ChatMessage[] {
+
+    if (!userId) {
+
+      return this.messages;
+
+    }
+
+    return this.messages.filter(message =>
+
+      message.senderId === userId ||
+      message.receiverId === userId
+
+    );
+
+  }
 
   sendMessage(message: ChatMessage): void {
 
     this.messages.push(message);
 
-  }
-
-  // ==========================================
-  // DELETE MESSAGE
-  // ==========================================
-
-  deleteMessage(id: number): void {
-
-    this.messages = this.messages.filter(
-
-      message => message.id !== id
-
-    );
-
-  }
-
-  // ==========================================
-  // EDIT MESSAGE
-  // ==========================================
-
-  editMessage(
-    id: number,
-    newMessage: string
-  ): void {
-
-    const message = this.messages.find(
-
-      message => message.id === id
-
-    );
-
-    if (message) {
-
-      message.message = newMessage;
-
-    }
-
-  }
-
-  // ==========================================
-  // MARK AS READ
-  // ==========================================
-
-  markAsRead(id: number): void {
-
-    const conversation = this.conversations.find(
-
-      conversation => conversation.id === id
-
-    );
+    const conversation =
+      this.conversations.find(c => c.id === message.receiverId);
 
     if (conversation) {
 
-      conversation.unread = 0;
+      conversation.lastMessage = message.message;
+
+      conversation.lastTime = message.time;
 
     }
+
+  }
+
+  editMessage(id: number, text: string): void {
+
+    const message =
+      this.messages.find(message => message.id === id);
+
+    if (message) {
+
+      message.message = text;
+
+    }
+
+  }
+
+  deleteMessage(id: number): void {
+
+    this.messages =
+      this.messages.filter(message => message.id !== id);
 
   }
 

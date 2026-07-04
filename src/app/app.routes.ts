@@ -55,6 +55,10 @@ export const routes: Routes = [
         path: 'inbox/chat/:id',
         component: PrivateChatComponent
       },
+      {
+  path: 'private-chat/:id',
+  component: PrivateChatComponent
+      },
 
       {
         path: 'chat-rooms',

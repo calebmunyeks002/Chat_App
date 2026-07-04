@@ -8,7 +8,10 @@ import {
 
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import {
+  Router,
+  ActivatedRoute
+} from '@angular/router';
 
 import { ChatService } from '../services/chat.service';
 import { ChatMessage } from '../models/chat-message';
@@ -31,9 +34,10 @@ implements OnInit, AfterViewChecked {
   scrollContainer!: ElementRef<HTMLDivElement>;
 
   constructor(
-    private router: Router,
-    private chatService: ChatService
-  ) {}
+  private router: Router,
+  private route: ActivatedRoute,
+  private chatService: ChatService
+) {}
 
   // ==========================
   // USER INFORMATION
@@ -97,15 +101,41 @@ implements OnInit, AfterViewChecked {
 
   ngOnInit(): void {
 
-    this.loadMessages();
+  const id = Number(
+    this.route.snapshot.paramMap.get('id')
+  );
+
+  const conversation =
+    this.chatService.getConversation(id);
+
+  if (conversation) {
+
+    this.chatUser = {
+
+      id: conversation.id,
+
+      name: conversation.name,
+
+      online: conversation.online,
+
+      typing: false,
+
+      avatar: conversation.avatar
+
+    };
 
   }
+
+  this.loadMessages();
+
+}
 
   private loadMessages(): void {
 
-    this.messages = this.chatService.getMessages();
+  this.messages =
+    this.chatService.getMessages(this.chatUser.id);
 
-  }
+}
 
   // ==========================
   // AUTO SCROLL
@@ -212,7 +242,7 @@ implements OnInit, AfterViewChecked {
 
     const message: ChatMessage = {
 
-      id: this.messages.length + 1,
+      id: Date.now(),
 
       senderId: 1,
 

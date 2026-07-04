@@ -7,9 +7,9 @@ import { Conversation } from '../models/conversation';
 })
 export class ChatService {
 
-  // ======================================
+  // ============================================
   // CONVERSATIONS
-  // ======================================
+  // ============================================
 
   private conversations: Conversation[] = [
 
@@ -45,9 +45,9 @@ export class ChatService {
 
   ];
 
-  // ======================================
-  // MESSAGES
-  // ======================================
+  // ============================================
+  // CHAT MESSAGES
+  // ============================================
 
   private messages: ChatMessage[] = [
 
@@ -75,9 +75,9 @@ export class ChatService {
 
   ];
 
-  // ======================================
+  // ============================================
   // CONVERSATIONS
-  // ======================================
+  // ============================================
 
   getConversations(): Conversation[] {
 
@@ -85,13 +85,30 @@ export class ChatService {
 
   }
 
-  // ======================================
+  getConversation(id: number): Conversation | undefined {
+
+    return this.conversations.find(c => c.id === id);
+
+  }
+
+  // ============================================
   // MESSAGES
-  // ======================================
+  // ============================================
 
-  getMessages(): ChatMessage[] {
+  getMessages(userId?: number): ChatMessage[] {
 
-    return this.messages;
+    if (!userId) {
+
+      return this.messages;
+
+    }
+
+    return this.messages.filter(message =>
+
+      message.senderId === userId ||
+      message.receiverId === userId
+
+    );
 
   }
 
@@ -99,12 +116,16 @@ export class ChatService {
 
     this.messages.push(message);
 
-  }
+    const conversation =
+      this.conversations.find(c => c.id === message.receiverId);
 
-  deleteMessage(id: number): void {
+    if (conversation) {
 
-    this.messages =
-      this.messages.filter(message => message.id !== id);
+      conversation.lastMessage = message.message;
+
+      conversation.lastTime = message.time;
+
+    }
 
   }
 
@@ -118,6 +139,13 @@ export class ChatService {
       message.message = text;
 
     }
+
+  }
+
+  deleteMessage(id: number): void {
+
+    this.messages =
+      this.messages.filter(message => message.id !== id);
 
   }
 

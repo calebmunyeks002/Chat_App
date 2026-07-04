@@ -2,25 +2,16 @@ import {
   Component,
   ElementRef,
   ViewChild,
-  AfterViewChecked
+  AfterViewChecked,
+  OnInit
 } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
-interface ChatMessage {
-
-  id: number;
-  sender: string;
-  message: string;
-  time: string;
-  mine: boolean;
-  status: 'Sent' | 'Delivered' | 'Read';
-  reaction?: string;
-  image?: string;
-
-}
+import { ChatService } from '../services/chat.service';
+import { ChatMessage } from '../models/chat-message';
 
 @Component({
   selector: 'app-private-chat',
@@ -33,13 +24,15 @@ interface ChatMessage {
   styleUrls: ['./private-chat.scss']
 })
 
-export class PrivateChatComponent implements AfterViewChecked {
+export class PrivateChatComponent
+implements OnInit, AfterViewChecked {
 
   @ViewChild('scrollContainer')
   scrollContainer!: ElementRef<HTMLDivElement>;
 
   constructor(
-    private router: Router
+    private router: Router,
+    private chatService: ChatService
   ) {}
 
   // ==========================
@@ -78,63 +71,41 @@ export class PrivateChatComponent implements AfterViewChecked {
   // ==========================
 
   emojis: string[] = [
-  '😀',
-  '😁',
-  '😂',
-  '🤣',
-  '😍',
-  '😎',
-  '🥳',
-  '👍',
-  '👏',
-  '🔥',
-  '❤️',
-  '🎉'
-];
+    '😀',
+    '😁',
+    '😂',
+    '🤣',
+    '😍',
+    '😎',
+    '🥳',
+    '👍',
+    '👏',
+    '🔥',
+    '❤️',
+    '🎉'
+  ];
 
   // ==========================
   // CHAT HISTORY
   // ==========================
 
-  messages: ChatMessage[] = [
+  messages: ChatMessage[] = [];
 
-    {
-      id: 1,
-      sender: 'Kevin',
-      message: 'Hello Caleb 👋',
-      time: '09:10',
-      mine: false,
-      status: 'Read'
-    },
+  // ==========================
+  // INITIALIZATION
+  // ==========================
 
-    {
-      id: 2,
-      sender: 'Me',
-      message: 'Hello Kevin!',
-      time: '09:11',
-      mine: true,
-      status: 'Read'
-    },
+  ngOnInit(): void {
 
-    {
-      id: 3,
-      sender: 'Kevin',
-      message: 'How is the FinChat project progressing?',
-      time: '09:13',
-      mine: false,
-      status: 'Read'
-    },
+    this.loadMessages();
 
-    {
-      id: 4,
-      sender: 'Me',
-      message: 'Very well. We have completed the dashboard and inbox.',
-      time: '09:15',
-      mine: true,
-      status: 'Delivered'
-    }
+  }
 
-  ];
+  private loadMessages(): void {
+
+    this.messages = this.chatService.getMessages();
+
+  }
 
   // ==========================
   // AUTO SCROLL
@@ -179,9 +150,7 @@ export class PrivateChatComponent implements AfterViewChecked {
 
       message.message
         .toLowerCase()
-        .includes(
-          this.searchText.toLowerCase()
-        )
+        .includes(this.searchText.toLowerCase())
 
     );
 
@@ -218,19 +187,18 @@ export class PrivateChatComponent implements AfterViewChecked {
 
     }
 
+    // Editing an existing message
     if (this.editingMessageId !== null) {
 
-      const message = this.messages.find(
+      this.chatService.editMessage(
 
-        m => m.id === this.editingMessageId
+        this.editingMessageId,
+
+        this.newMessage
 
       );
 
-      if (message) {
-
-        message.message = this.newMessage;
-
-      }
+      this.loadMessages();
 
       this.editingMessageId = null;
 
@@ -242,11 +210,15 @@ export class PrivateChatComponent implements AfterViewChecked {
 
     }
 
-    this.messages.push({
+    const message: ChatMessage = {
 
       id: this.messages.length + 1,
 
-      sender: 'Me',
+      senderId: 1,
+
+      receiverId: this.chatUser.id,
+
+      senderName: 'Me',
 
       message: this.newMessage,
 
@@ -264,7 +236,11 @@ export class PrivateChatComponent implements AfterViewChecked {
 
       status: 'Sent'
 
-    });
+    };
+
+    this.chatService.sendMessage(message);
+
+    this.loadMessages();
 
     this.newMessage = '';
 
@@ -335,11 +311,9 @@ export class PrivateChatComponent implements AfterViewChecked {
 
   deleteMessage(id: number): void {
 
-    this.messages = this.messages.filter(
+    this.chatService.deleteMessage(id);
 
-      message => message.id !== id
-
-    );
+    this.loadMessages();
 
   }
 

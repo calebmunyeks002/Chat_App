@@ -4,14 +4,14 @@ export interface Conversation {
 
   name: string;
 
-  avatar: string;
-
   lastMessage: string;
 
-  time: string;
+  lastTime: string;
+
+  unread: number;
 
   online: boolean;
 
-  unread: number;
+  avatar: string;
 
 }

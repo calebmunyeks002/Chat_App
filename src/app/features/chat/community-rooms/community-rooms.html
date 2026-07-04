@@ -1,0 +1,95 @@
+<div class="community-page">
+
+    <div class="header">
+
+        <h1>
+
+            Community Hub
+
+        </h1>
+
+        <p>
+
+            Discover enterprise communities and collaborate securely.
+
+        </p>
+
+    </div>
+
+    <div class="community-grid">
+
+        <div
+        class="community-card"
+        *ngFor="let community of communities">
+
+            <img
+            [src]="community.image">
+
+            <div class="content">
+
+                <div class="title">
+
+                    <h2>
+
+                        {{community.name}}
+
+                    </h2>
+
+                    <span
+                    *ngIf="community.featured"
+                    class="featured">
+
+                        Featured
+
+                    </span>
+
+                </div>
+
+                <p>
+
+                    {{community.description}}
+
+                </p>
+
+                <div class="stats">
+
+                    <span>
+
+                        👥 {{community.members}}
+
+                    </span>
+
+                    <span>
+
+                        🟢 {{community.online}}
+
+                    </span>
+
+                    <span>
+
+                        💬 {{community.rooms}}
+
+                    </span>
+
+                </div>
+
+                <div class="bottom">
+
+                    <div>
+
+                        ⭐ {{community.rating}}
+
+                    </div>
+
+<button [routerLink]="['/dashboard/chat', community.id]">    Open Community
+</button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

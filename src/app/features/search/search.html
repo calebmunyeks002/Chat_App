@@ -1,0 +1,79 @@
+<div class="search-page">
+
+    <div class="header">
+
+        <h1>
+
+            Global Search
+
+        </h1>
+
+        <p>
+
+            Search rooms, users, communities and messages.
+
+        </p>
+
+    </div>
+
+    <div class="search-box">
+
+        <input
+
+        [(ngModel)]="searchText"
+
+        placeholder="Search anything...">
+
+        <select
+
+        [(ngModel)]="selectedFilter">
+
+            <option
+
+            *ngFor="let filter of filters">
+
+                {{filter}}
+
+            </option>
+
+        </select>
+
+    </div>
+
+    <div class="results">
+
+        <div
+
+        class="result-card"
+
+        *ngFor="let result of filteredResults"
+
+        (click)="openResult(result)">
+
+            <div>
+
+                <h2>
+
+                    {{result.title}}
+
+                </h2>
+
+                <p>
+
+                    {{result.subtitle}}
+
+                </p>
+
+            </div>
+
+            <span>
+
+                {{result.type}}
+
+            </span>
+
+        </div>
+
+    </div>
+
+</div>

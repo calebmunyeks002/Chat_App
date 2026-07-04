@@ -1,0 +1,150 @@
+<div class="settings-page">
+
+    <div class="header">
+
+        <h1>Settings Center</h1>
+
+        <p>
+            Manage your account and application preferences.
+        </p>
+
+    </div>
+
+    <section class="card">
+
+        <h2>🎨 Appearance</h2>
+
+        <label>Theme</label>
+
+        <select [(ngModel)]="theme">
+
+            <option>Light</option>
+
+            <option>Dark</option>
+
+            <option>System</option>
+
+        </select>
+
+        <label>Font Size</label>
+
+        <select [(ngModel)]="fontSize">
+
+            <option>Small</option>
+
+            <option>Medium</option>
+
+            <option>Large</option>
+
+        </select>
+
+    </section>
+
+    <section class="card">
+
+        <h2>👤 Account</h2>
+
+        <label>Username</label>
+
+        <input
+            type="text"
+            [(ngModel)]="username">
+
+        <label>Email</label>
+
+        <input
+            type="email"
+            [(ngModel)]="email">
+
+        <label>Phone</label>
+
+        <input
+            type="text"
+            [(ngModel)]="phone">
+
+        <button
+            class="secondary"
+            (click)="changePassword()">
+
+            Change Password
+
+        </button>
+
+    </section>
+
+    <section class="card">
+
+        <h2>🔔 Notifications</h2>
+
+        <label>
+            <input
+                type="checkbox"
+                [(ngModel)]="pushNotifications">
+            Push Notifications
+        </label>
+
+        <label>
+            <input
+                type="checkbox"
+                [(ngModel)]="emailNotifications">
+            Email Notifications
+        </label>
+
+        <label>
+            <input
+                type="checkbox"
+                [(ngModel)]="soundNotifications">
+            Sound Notifications
+        </label>
+
+    </section>
+
+    <section class="card">
+
+        <h2>🛡 Privacy & Security</h2>
+
+        <label>
+            <input
+                type="checkbox"
+                [(ngModel)]="lastSeenVisible">
+            Show Last Seen
+        </label>
+
+        <label>
+            <input
+                type="checkbox"
+                [(ngModel)]="profileVisible">
+            Public Profile
+        </label>
+
+        <button
+            class="warning"
+            (click)="reportRoom()">
+
+            Report a Room
+
+        </button>
+
+    </section>
+
+    <div class="actions">
+
+        <button
+            class="save"
+            (click)="saveSettings()">
+
+            Save Settings
+
+        </button>
+
+        <button
+            class="logout"
+            (click)="logout()">
+
+            Logout
+
+        </button>
+
+    </div>
+
+</div>

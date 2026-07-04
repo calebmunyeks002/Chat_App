@@ -1,0 +1,231 @@
+<div class="register-page">
+
+  <div class="register-card">
+
+    <h1>FinChat</h1>
+
+    <p>Create your secure fintech account</p>
+
+    <form
+      [formGroup]="registerForm"
+      (ngSubmit)="register()">
+
+      <!-- ================= Profile Photo ================= -->
+
+      <div class="image-upload">
+
+        <img
+          *ngIf="imagePreview"
+          [src]="imagePreview"
+          alt="Profile Preview">
+
+        <label class="upload-btn">
+
+          Upload Profile Photo
+
+          <input
+            type="file"
+            accept="image/*"
+            hidden
+            (change)="onImageSelected($event)">
+
+        </label>
+
+        <small class="helper-text">
+          Upload a clear profile picture.
+        </small>
+
+      </div>
+
+      <!-- ================= Full Name ================= -->
+
+      <input
+        type="text"
+        placeholder="Enter your full name"
+        formControlName="fullName">
+
+      <small
+        class="error"
+        *ngIf="registerForm.get('fullName')?.touched &&
+               registerForm.get('fullName')?.hasError('required')">
+
+        Full name is required.
+
+      </small>
+
+      <!-- ================= Username ================= -->
+
+      <input
+        type="text"
+        placeholder="Choose a unique username"
+        formControlName="username">
+
+      <small
+        class="error"
+        *ngIf="registerForm.get('username')?.touched &&
+               registerForm.get('username')?.hasError('required')">
+
+        Username is required.
+
+      </small>
+
+      <!-- ================= Email ================= -->
+
+      <input
+        type="email"
+        placeholder="Enter your email address"
+        formControlName="email">
+
+      <small
+        class="error"
+        *ngIf="registerForm.get('email')?.touched &&
+               registerForm.get('email')?.hasError('required')">
+
+        Email is required.
+
+      </small>
+
+      <small
+        class="error"
+        *ngIf="registerForm.get('email')?.touched &&
+               registerForm.get('email')?.hasError('email')">
+
+        Please enter a valid email address.
+
+      </small>
+
+      <!-- ================= Phone ================= -->
+
+      <input
+        type="tel"
+        placeholder="e.g. 0712345678"
+        formControlName="phone">
+
+      <small
+        class="error"
+        *ngIf="registerForm.get('phone')?.touched &&
+               registerForm.get('phone')?.hasError('required')">
+
+        Phone number is required.
+
+      </small>
+
+      <!-- ================= Password ================= -->
+
+      <div class="password-box">
+
+        <input
+          [type]="hidePassword ? 'password' : 'text'"
+          placeholder="Enter a password (minimum 8 characters)"
+          formControlName="password">
+
+        <button
+          type="button"
+          (click)="hidePassword = !hidePassword">
+
+          {{ hidePassword ? 'Show' : 'Hide' }}
+
+        </button>
+
+      </div>
+
+      <small class="helper-text">
+
+        Password must contain at least 8 characters.
+
+      </small>
+
+      <small
+        class="error"
+        *ngIf="registerForm.get('password')?.touched &&
+               registerForm.get('password')?.hasError('required')">
+
+        Password is required.
+
+      </small>
+
+      <small
+        class="error"
+        *ngIf="registerForm.get('password')?.touched &&
+               registerForm.get('password')?.hasError('minlength')">
+
+        Password must be at least 8 characters long.
+
+      </small>
+
+      <!-- ================= Confirm Password ================= -->
+
+      <div class="password-box">
+
+        <input
+          [type]="hideConfirmPassword ? 'password' : 'text'"
+          placeholder="Re-enter your password"
+          formControlName="confirmPassword">
+
+        <button
+          type="button"
+          (click)="hideConfirmPassword = !hideConfirmPassword">
+
+          {{ hideConfirmPassword ? 'Show' : 'Hide' }}
+
+        </button>
+
+      </div>
+
+      <small class="helper-text">
+
+        Re-enter the same password to confirm.
+
+      </small>
+
+      <small
+        class="error"
+        *ngIf="registerForm.get('confirmPassword')?.touched &&
+               registerForm.get('confirmPassword')?.hasError('required')">
+
+        Please confirm your password.
+
+      </small>
+
+      <small
+        class="error"
+        *ngIf="registerForm.get('confirmPassword')?.touched &&
+               registerForm.value.password &&
+               registerForm.value.confirmPassword &&
+               registerForm.value.password !== registerForm.value.confirmPassword">
+
+        Passwords do not match.
+
+      </small>
+
+      <!-- ================= Submit Button ================= -->
+
+      <button
+        type="submit"
+        class="register-btn">
+
+        Create Account
+
+      </button>
+
+    </form>
+
+    <!-- ================= Login ================= -->
+
+    <div class="login-link">
+
+      Already have an account?
+
+      <a
+        role="button"
+        (click)="goToLogin()">
+
+        Sign In
+
+      </a>
+
+    </div>
+
+  </div>
+
+</div>

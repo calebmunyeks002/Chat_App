@@ -1,0 +1,118 @@
+<div class="myrooms-page">
+
+    <div class="header">
+
+        <h1>
+
+            My Chat Rooms
+
+        </h1>
+
+        <p>
+
+            Manage every room you've joined.
+
+        </p>
+
+    </div>
+
+    <input
+    class="search"
+    type="text"
+    placeholder="Search my rooms...">
+
+    <div class="room-grid">
+
+        <div
+        class="room-card"
+        *ngFor="let room of rooms">
+
+            <div class="title">
+
+                <h2>
+
+                    {{room.name}}
+
+                </h2>
+
+                <span
+                class="status"
+                [class.online]="room.online">
+
+                </span>
+
+            </div>
+
+            <p>
+
+                Members
+
+                {{room.members}}
+
+            </p>
+
+            <p>
+
+                Joined
+
+                {{room.joined}}
+
+            </p>
+
+            <p>
+
+                Role
+
+                <strong>
+
+                    {{room.role}}
+
+                </strong>
+
+            </p>
+
+            <div class="buttons">
+
+                <button
+                class="open"
+                (click)="openRoom(room)">
+
+                    Open
+
+                </button>
+
+                <button
+                class="leave"
+                (click)="leaveRoom(room)">
+
+                    Leave
+
+                </button>
+
+                <button
+                class="delete"
+                *ngIf="room.role=='Owner'"
+                (click)="deleteRoom(room)">
+
+                    Delete
+
+                </button>
+
+            </div>
+
+            <button
+    class="admin"
+    [disabled]="!room.eligibleForAdmin"
+    (click)="requestAdmin(room)">
+
+    {{ room.eligibleForAdmin
+        ? 'Request Admin Role'
+        : 'Eligible in ' + room.monthsRemaining + ' month(s)' }}
+
+</button>
+
+        </div>
+
+    </div>
+
+</div>

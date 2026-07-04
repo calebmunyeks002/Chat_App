@@ -1,0 +1,244 @@
+*{
+    box-sizing:border-box;
+}
+
+.login-page{
+
+    height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:linear-gradient(
+        135deg,
+        #0B132B,
+        #0057D9,
+        #00C896
+    );
+
+    padding:20px;
+
+}
+
+.login-card{
+
+    width:430px;
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:45px;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
+
+    animation:slideUp .6s ease;
+
+}
+
+.logo{
+
+    text-align:center;
+
+    margin-bottom:35px;
+
+}
+
+.logo-circle{
+
+    width:90px;
+
+    height:90px;
+
+    background:#0057D9;
+
+    color:white;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:42px;
+
+    margin:auto;
+
+    margin-bottom:20px;
+
+}
+
+.logo h1{
+
+    color:#0057D9;
+
+    margin-bottom:8px;
+
+}
+
+.logo p{
+
+    color:#666;
+
+}
+
+form{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+input{
+
+    padding:15px;
+
+    border-radius:10px;
+
+    border:1px solid #ccc;
+
+    font-size:15px;
+
+}
+
+.password-box{
+
+    display:flex;
+
+}
+
+.password-box input{
+
+    flex:1;
+
+    border-radius:10px 0 0 10px;
+
+}
+
+.password-box button{
+
+    width:90px;
+
+    background:#00C896;
+
+    border:none;
+
+    color:white;
+
+    cursor:pointer;
+
+    border-radius:0 10px 10px 0;
+
+}
+
+.options{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    font-size:14px;
+
+}
+
+.options a{
+
+    color:#0057D9;
+
+    cursor:pointer;
+
+    text-decoration:none;
+
+}
+
+.options a:hover{
+
+    text-decoration:underline;
+
+}
+
+.login-btn{
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#0057D9;
+
+    color:white;
+
+    font-size:17px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.login-btn:hover{
+
+    background:#003d99;
+
+}
+
+.register-link{
+
+    margin-top:25px;
+
+    text-align:center;
+
+}
+
+.register-link a{
+
+    color:#0057D9;
+
+    cursor:pointer;
+
+    font-weight:bold;
+
+}
+
+@keyframes slideUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(40px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+@media(max-width:600px){
+
+.login-card{
+
+    width:100%;
+
+    padding:30px;
+
+}
+
+}

@@ -1,0 +1,118 @@
+<div class="profile-page">
+
+    <div class="profile-header">
+
+        <img
+        [src]="user.avatar"
+        alt="Profile">
+
+        <div>
+
+            <h1>
+
+                {{user.fullName}}
+
+            </h1>
+
+            <p>
+
+                @{{user.username}}
+
+            </p>
+
+            <span
+            class="online"
+            *ngIf="user.online">
+
+                ● Online
+
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="profile-card">
+
+        <h2>Personal Information</h2>
+
+        <p><strong>Email:</strong> {{user.email}}</p>
+
+        <p><strong>Phone:</strong> {{user.phone}}</p>
+
+        <p><strong>Bio:</strong> {{user.bio}}</p>
+
+        <p><strong>Last Seen:</strong> {{user.lastSeen}}</p>
+
+        <p><strong>Member Since:</strong> {{user.joined}}</p>
+
+    </div>
+
+    <div class="statistics">
+
+        <div
+        class="stat-card"
+        *ngFor="let stat of statistics">
+
+            <h2>
+
+                {{stat.icon}}
+
+            </h2>
+
+            <h3>
+
+                {{stat.value}}
+
+            </h3>
+
+            <p>
+
+                {{stat.title}}
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="profile-card">
+
+        <h2>
+
+            Achievements
+
+        </h2>
+
+        <ul>
+
+            <li
+            *ngFor="let achievement of achievements">
+
+                🏅 {{achievement}}
+
+            </li>
+
+        </ul>
+
+    </div>
+
+    <div class="actions">
+
+        <button
+        (click)="editProfile()">
+
+            Edit Profile
+
+        </button>
+
+        <button
+        (click)="shareProfile()">
+
+            Share Profile
+
+        </button>
+
+    </div>
+
+</div>

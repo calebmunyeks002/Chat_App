@@ -1,0 +1,195 @@
+* {
+  box-sizing: border-box;
+}
+
+.navbar {
+
+  height: 70px;
+
+  background: #0B132B;
+
+  color: white;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 0 25px;
+
+  box-shadow: 0 3px 12px rgba(0,0,0,.15);
+
+}
+
+.left-section {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+
+}
+
+.menu-btn {
+
+  border: none;
+
+  background: transparent;
+
+  color: white;
+
+  font-size: 28px;
+
+  cursor: pointer;
+
+}
+
+.logo {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+}
+
+.logo-circle {
+
+  width: 42px;
+
+  height: 42px;
+
+  border-radius: 50%;
+
+  background: #00C896;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  font-size: 22px;
+
+  font-weight: bold;
+
+}
+
+.logo-text {
+
+  font-size: 22px;
+
+  font-weight: bold;
+
+}
+
+.search-bar {
+
+  flex: 1;
+
+  display: flex;
+
+  justify-content: center;
+
+}
+
+.search-bar input {
+
+  width: 55%;
+
+  padding: 12px 18px;
+
+  border: none;
+
+  border-radius: 30px;
+
+  outline: none;
+
+  font-size: 15px;
+
+}
+
+.right-section {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 25px;
+
+}
+
+.notification {
+
+  position: relative;
+
+  font-size: 24px;
+
+  cursor: pointer;
+
+}
+
+.badge {
+
+  position: absolute;
+
+  top: -8px;
+
+  right: -10px;
+
+  background: red;
+
+  color: white;
+
+  border-radius: 50%;
+
+  width: 20px;
+
+  height: 20px;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  font-size: 12px;
+
+  font-weight: bold;
+
+}
+
+.profile img {
+
+  width: 45px;
+
+  height: 45px;
+
+  border-radius: 50%;
+
+  object-fit: cover;
+
+  border: 2px solid #00C896;
+
+  cursor: pointer;
+
+}
+
+@media (max-width: 768px) {
+
+  .search-bar {
+
+    display: none;
+
+  }
+
+  .logo-text {
+
+    display: none;
+
+  }
+
+}

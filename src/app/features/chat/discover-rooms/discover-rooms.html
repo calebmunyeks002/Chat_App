@@ -1,0 +1,86 @@
+<div class="discover-page">
+
+    <div class="search-container">
+
+        <input
+        type="text"
+        placeholder="Search rooms...">
+
+    </div>
+
+    <div class="categories">
+
+        <button>All</button>
+
+        <button>Finance</button>
+
+        <button>Programming</button>
+
+        <button>Security</button>
+
+        <button>Cloud</button>
+
+        <button>Technology</button>
+
+    </div>
+
+    <div class="room-grid">
+
+        <div
+        class="room-card"
+        *ngFor="let room of rooms">
+
+            <div class="top">
+
+                <h2>
+
+                    {{room.name}}
+
+                </h2>
+
+                <span
+                class="badge">
+
+                    {{room.privacy}}
+
+                </span>
+
+            </div>
+
+            <p>
+
+                {{room.description}}
+
+            </p>
+
+            <div class="details">
+
+                <span>
+
+                    👥 {{room.members}}
+
+                </span>
+
+                <span>
+
+                    🟢 {{room.online}}
+
+                </span>
+
+            </div>
+
+            <div class="category">
+
+                {{room.category}}
+
+            </div>
+
+         <button [routerLink]="['/dashboard/chat', room.id]">
+    Join Chat
+</button>
+
+        </div>
+
+    </div>
+
+</div>

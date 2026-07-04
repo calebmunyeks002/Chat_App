@@ -1,0 +1,88 @@
+<div class="login-page">
+
+    <div class="login-card">
+
+        <div class="logo">
+
+            <div class="logo-circle">
+                ₿
+            </div>
+
+            <h1>FinChat</h1>
+
+            <p>Secure Enterprise Messaging</p>
+
+        </div>
+
+        <form
+        [formGroup]="loginForm"
+        (ngSubmit)="login()">
+
+            <input
+            type="email"
+            placeholder="Email Address"
+            formControlName="email">
+
+            <div class="password-box">
+
+                <input
+                [type]="hidePassword ? 'password':'text'"
+                placeholder="Password"
+                formControlName="password">
+
+                <button
+                type="button"
+                (click)="hidePassword=!hidePassword">
+
+                    {{hidePassword ? 'Show':'Hide'}}
+
+                </button>
+
+            </div>
+
+            <div class="options">
+
+                <label>
+
+                    <input
+                    type="checkbox"
+                    formControlName="rememberMe">
+
+                    Remember Me
+
+                </label>
+
+                <a
+                (click)="forgotPassword()">
+
+                    Forgot Password?
+
+                </a>
+
+            </div>
+
+            <button
+            class="login-btn"
+            type="submit">
+
+                {{ loading ? 'Signing In...' : 'Sign In' }}
+
+            </button>
+
+        </form>
+
+        <div class="register-link">
+
+            Don't have an account?
+
+            <a (click)="goToRegister()">
+
+                Register
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

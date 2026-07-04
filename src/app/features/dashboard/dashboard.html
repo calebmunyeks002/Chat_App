@@ -1,0 +1,29 @@
+<div class="dashboard-container">
+
+    <!-- Navbar -->
+    <app-navbar
+        (menuClicked)="toggleSidebar()">
+    </app-navbar>
+
+    <div class="dashboard-body">
+
+        <!-- Sidebar -->
+        <app-sidebar
+            [collapsed]="sidebarCollapsed">
+        </app-sidebar>
+
+        <!-- Main Content -->
+        <main
+            class="main-content"
+            [class.expanded]="sidebarCollapsed">
+
+            <router-outlet></router-outlet>
+
+        </main>
+
+    </div>
+
+    <!-- Footer -->
+    <app-footer></app-footer>
+
+</div>

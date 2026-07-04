@@ -1,0 +1,29 @@
+<aside
+  class="sidebar"
+  [class.collapsed]="collapsed">
+
+  <nav>
+
+    <a
+      *ngFor="let item of menuItems"
+      [routerLink]="item.route"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }">
+
+      <span class="material-symbols-outlined">
+        {{ item.icon }}
+      </span>
+
+      <span
+        class="label"
+        *ngIf="!collapsed">
+
+        {{ item.label }}
+
+      </span>
+
+    </a>
+
+  </nav>
+
+</aside>

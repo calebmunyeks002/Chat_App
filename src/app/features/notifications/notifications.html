@@ -1,0 +1,87 @@
+<div class="notifications-page">
+
+<div class="header">
+
+<h1>
+
+Notification Center
+
+</h1>
+
+<p>
+
+Stay updated with everything happening.
+
+</p>
+
+</div>
+
+<div class="toolbar">
+
+<button
+
+(click)="markAllRead()">
+
+Mark All Read
+
+</button>
+
+</div>
+
+<div class="notification-list">
+
+<div
+
+class="notification-card"
+
+[class.unread]="!notification.read"
+
+*ngFor="let notification of notifications">
+
+<div class="left">
+
+<h3>
+
+{{notification.title}}
+
+</h3>
+
+<p>
+
+{{notification.message}}
+
+</p>
+
+<span>
+
+{{notification.time}}
+
+</span>
+
+</div>
+
+<div class="right">
+
+<button
+
+(click)="markAsRead(notification)">
+
+✓
+
+</button>
+
+<button
+
+(click)="deleteNotification(notification)">
+
+🗑
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>

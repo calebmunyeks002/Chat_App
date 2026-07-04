@@ -1,0 +1,84 @@
+<div class="chat-window">
+
+  <div class="chat-header">
+
+    <div>
+
+      <h2>{{ roomName }}</h2>
+
+      <span>{{ onlineMembers }} members online</span>
+
+    </div>
+
+    <div class="header-actions">
+
+      <button>🔍</button>
+
+      <button>📞</button>
+
+      <button>🎥</button>
+
+    </div>
+
+  </div>
+
+  <div class="messages">
+
+    <div
+      *ngFor="let msg of messages"
+      class="message"
+      [class.mine]="msg.mine">
+
+      <div class="sender">
+
+        {{ msg.sender }}
+
+      </div>
+
+      <div class="bubble">
+
+        {{ msg.message }}
+
+      </div>
+
+      <div class="time">
+
+        {{ msg.time }}
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="typing">
+
+    {{ typingUser }} is typing...
+
+  </div>
+
+  <div class="composer">
+
+    <button>😊</button>
+
+    <button>📎</button>
+
+    <input
+      type="text"
+      placeholder="Type a message..."
+      [(ngModel)]="message"
+      (keyup.enter)="sendMessage()">
+
+    <button>🎤</button>
+
+    <button
+      class="send"
+      (click)="sendMessage()">
+
+      Send
+
+    </button>
+
+  </div>
+
+</div>

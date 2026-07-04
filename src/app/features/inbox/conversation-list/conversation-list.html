@@ -1,0 +1,55 @@
+<div class="conversation-list">
+
+    <div
+        
+    class="conversation"
+    *ngFor="let chat of conversations"
+    [routerLink]="['/dashboard/inbox/chat', chat.id]">
+
+        <img
+            [src]="chat.avatar"
+            alt="Avatar">
+
+        <div class="details">
+
+            <h3>
+
+                {{chat.name}}
+
+                <span
+                    class="status"
+                    [class.online]="chat.online">
+
+                </span>
+
+            </h3>
+
+            <p>
+
+                {{chat.lastMessage}}
+
+            </p>
+
+        </div>
+
+        <div class="meta">
+
+            <small>
+
+                {{chat.time}}
+
+            </small>
+
+            <span
+                *ngIf="chat.unread>0"
+                class="badge">
+
+                {{chat.unread}}
+
+            </span>
+
+        </div>
+
+    </div>
+
+</div>

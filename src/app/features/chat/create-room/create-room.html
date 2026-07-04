@@ -1,0 +1,120 @@
+<div class="create-room-page">
+
+    <div class="header">
+
+        <h1>Create New Chat Room</h1>
+
+        <p>
+            Build a secure community for collaboration.
+        </p>
+
+    </div>
+
+    <form
+        [formGroup]="roomForm"
+        (ngSubmit)="createRoom()">
+
+        <div class="image-upload">
+
+            <img
+                *ngIf="roomPreview"
+                [src]="roomPreview">
+
+            <label for="roomImage">
+
+                Upload Room Logo
+
+            </label>
+
+            <input
+                id="roomImage"
+                hidden
+                type="file"
+                accept="image/*"
+                (change)="onImageSelected($event)">
+
+        </div>
+
+        <input
+            type="text"
+            placeholder="Room Name"
+            formControlName="roomName">
+
+        <textarea
+            rows="5"
+            placeholder="Room Description"
+            formControlName="description">
+        </textarea>
+
+        <select
+            formControlName="category">
+
+            <option value="">
+                Select Category
+            </option>
+
+            <option
+                *ngFor="let category of categories"
+                [value]="category">
+
+                {{category}}
+
+            </option>
+
+        </select>
+
+        <select formControlName="privacy">
+
+            <option>Public</option>
+
+            <option>Private</option>
+
+        </select>
+
+        <input
+            type="number"
+            placeholder="Maximum Members"
+            formControlName="maxMembers">
+
+        <input
+            type="text"
+            placeholder="Tags (comma separated)"
+            formControlName="tags">
+
+        <div class="checkbox">
+
+            <label>
+
+                <input
+                    type="checkbox"
+                    formControlName="allowFiles">
+
+                Allow File Sharing
+
+            </label>
+
+        </div>
+
+        <div class="checkbox">
+
+            <label>
+
+                <input
+                    type="checkbox"
+                    formControlName="adminApproval">
+
+                Require Admin Approval
+
+            </label>
+
+        </div>
+
+        <button type="submit">
+
+            Create Room
+
+        </button>
+
+    </form>
+
+</div>

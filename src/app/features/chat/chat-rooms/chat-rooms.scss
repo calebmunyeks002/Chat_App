@@ -1,0 +1,79 @@
+.chat-rooms-page{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:30px;
+
+}
+
+.page-header{
+
+    background:linear-gradient(135deg,#0057D9,#00C896);
+
+    color:white;
+
+    padding:35px;
+
+    border-radius:20px;
+
+}
+
+.tabs{
+
+    display:flex;
+
+    gap:20px;
+
+    background:white;
+
+    padding:20px;
+
+    border-radius:15px;
+
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+
+}
+
+.tabs a{
+
+    text-decoration:none;
+
+    padding:12px 25px;
+
+    border-radius:30px;
+
+    color:#0057D9;
+
+    transition:.3s;
+
+}
+
+.tabs a:hover{
+
+    background:#0057D9;
+
+    color:white;
+
+}
+
+.tabs a.active{
+
+    background:#00C896;
+
+    color:white;
+
+}
+
+.content{
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:30px;
+
+    min-height:500px;
+
+}

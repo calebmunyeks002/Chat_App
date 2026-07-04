@@ -1,0 +1,687 @@
+/* ==========================================
+   PRIVATE CHAT WINDOW
+========================================== */
+
+.chat-window{
+
+height:100%;
+
+display:flex;
+
+flex-direction:column;
+
+background:#f5f7fb;
+
+border-radius:18px;
+
+overflow:hidden;
+
+box-shadow:0 8px 25px rgba(0,0,0,.08);
+
+}
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.chat-header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:18px 24px;
+
+background:#0057D9;
+
+color:white;
+
+}
+
+.user-info{
+
+display:flex;
+
+align-items:center;
+
+gap:15px;
+
+}
+
+.user-info img{
+
+width:55px;
+
+height:55px;
+
+border-radius:50%;
+
+object-fit:cover;
+
+border:3px solid white;
+
+}
+
+.user-info h2{
+
+margin:0;
+
+font-size:20px;
+
+font-weight:600;
+
+}
+
+.user-info small{
+
+opacity:.95;
+
+font-size:13px;
+
+}
+
+.header-actions{
+
+display:flex;
+
+gap:12px;
+
+}
+
+.header-actions button{
+
+width:42px;
+
+height:42px;
+
+border:none;
+
+border-radius:50%;
+
+background:rgba(255,255,255,.18);
+
+color:white;
+
+cursor:pointer;
+
+font-size:18px;
+
+transition:.3s;
+
+}
+
+.header-actions button:hover{
+
+background:white;
+
+color:#0057D9;
+
+}
+
+/* ==========================================
+   SEARCH BAR
+========================================== */
+
+.search-bar{
+
+padding:15px;
+
+background:white;
+
+border-bottom:1px solid #ececec;
+
+}
+
+.search-bar input{
+
+width:100%;
+
+padding:13px 18px;
+
+border-radius:30px;
+
+border:1px solid #d6d6d6;
+
+font-size:15px;
+
+outline:none;
+
+}
+
+.search-bar input:focus{
+
+border-color:#0057D9;
+
+}
+
+/* ==========================================
+   MESSAGE AREA
+========================================== */
+
+.messages{
+
+flex:1;
+
+overflow-y:auto;
+
+padding:25px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:20px;
+
+background:#eef2f7;
+
+}
+
+.message-row{
+
+display:flex;
+
+align-items:flex-end;
+
+gap:10px;
+
+}
+
+.message-row.mine{
+
+justify-content:flex-end;
+
+}
+
+.avatar{
+
+width:40px;
+
+height:40px;
+
+border-radius:50%;
+
+object-fit:cover;
+
+}
+
+/* ==========================================
+   CHAT BUBBLE
+========================================== */
+
+.bubble{
+
+max-width:65%;
+
+padding:14px 18px;
+
+border-radius:18px;
+
+background:white;
+
+box-shadow:0 3px 10px rgba(0,0,0,.08);
+
+animation:fadeIn .25s ease;
+
+}
+
+.bubble.mine{
+
+background:#0057D9;
+
+color:white;
+
+}
+
+.bubble p{
+
+margin:0;
+
+line-height:1.5;
+
+word-break:break-word;
+
+}
+
+/* ==========================================
+   IMAGE
+========================================== */
+
+.message-image{
+
+width:100%;
+
+max-width:260px;
+
+border-radius:12px;
+
+margin-bottom:10px;
+
+}
+
+/* ==========================================
+   MESSAGE FOOTER
+========================================== */
+
+.message-footer{
+
+margin-top:10px;
+
+display:flex;
+
+justify-content:flex-end;
+
+align-items:center;
+
+gap:8px;
+
+font-size:11px;
+
+opacity:.8;
+
+}
+
+/* ==========================================
+   REACTION
+========================================== */
+
+.reaction-display{
+
+margin-top:8px;
+
+font-size:22px;
+
+}
+
+.reaction-buttons{
+
+margin-top:10px;
+
+display:flex;
+
+gap:8px;
+
+}
+
+.reaction-buttons button{
+
+border:none;
+
+background:#f0f0f0;
+
+padding:5px 10px;
+
+border-radius:20px;
+
+cursor:pointer;
+
+transition:.2s;
+
+font-size:16px;
+
+}
+
+.reaction-buttons button:hover{
+
+background:#d9e9ff;
+
+}
+
+/* ==========================================
+   MESSAGE ACTIONS
+========================================== */
+
+.message-actions{
+
+display:flex;
+
+gap:12px;
+
+margin-top:12px;
+
+}
+
+.message-actions button{
+
+border:none;
+
+background:none;
+
+cursor:pointer;
+
+color:inherit;
+
+font-size:13px;
+
+font-weight:500;
+
+opacity:.85;
+
+}
+
+.message-actions button:hover{
+
+text-decoration:underline;
+
+}
+
+/* ==========================================
+   IMAGE PREVIEW
+========================================== */
+
+.image-preview{
+
+padding:15px;
+
+background:white;
+
+border-top:1px solid #ececec;
+
+display:flex;
+
+align-items:center;
+
+gap:15px;
+
+}
+
+.image-preview img{
+
+width:120px;
+
+height:120px;
+
+border-radius:12px;
+
+object-fit:cover;
+
+}
+
+.image-preview button{
+
+border:none;
+
+padding:10px 18px;
+
+background:#ff5252;
+
+color:white;
+
+border-radius:8px;
+
+cursor:pointer;
+
+}
+
+/* ==========================================
+   EMOJIS
+========================================== */
+
+.emoji-bar{
+
+display:flex;
+
+overflow-x:auto;
+
+gap:8px;
+
+padding:12px;
+
+background:#fafafa;
+
+border-top:1px solid #ececec;
+
+}
+
+.emoji-bar button{
+
+border:none;
+
+background:white;
+
+width:42px;
+
+height:42px;
+
+border-radius:50%;
+
+cursor:pointer;
+
+font-size:22px;
+
+box-shadow:0 2px 8px rgba(0,0,0,.08);
+
+transition:.2s;
+
+}
+
+.emoji-bar button:hover{
+
+transform:scale(1.12);
+
+}
+
+/* ==========================================
+   MESSAGE INPUT
+========================================== */
+
+.message-box{
+
+display:flex;
+
+align-items:center;
+
+gap:15px;
+
+padding:18px;
+
+background:white;
+
+border-top:1px solid #ececec;
+
+}
+
+.attachment{
+
+font-size:24px;
+
+cursor:pointer;
+
+}
+
+.message-box input{
+
+flex:1;
+
+padding:15px 20px;
+
+border-radius:30px;
+
+border:1px solid #d6d6d6;
+
+font-size:15px;
+
+outline:none;
+
+}
+
+.message-box input:focus{
+
+border-color:#0057D9;
+
+}
+
+.send-btn{
+
+width:52px;
+
+height:52px;
+
+border:none;
+
+border-radius:50%;
+
+background:#00C896;
+
+color:white;
+
+font-size:20px;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.send-btn:hover{
+
+transform:scale(1.08);
+
+background:#00a67d;
+
+}
+
+/* ==========================================
+   SCROLLBAR
+========================================== */
+
+.messages::-webkit-scrollbar{
+
+width:8px;
+
+}
+
+.messages::-webkit-scrollbar-thumb{
+
+background:#c7d5e8;
+
+border-radius:10px;
+
+}
+
+/* ==========================================
+   ANIMATION
+========================================== */
+
+@keyframes fadeIn{
+
+from{
+
+opacity:0;
+
+transform:translateY(12px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media(max-width:768px){
+
+.chat-header{
+
+padding:14px;
+
+}
+.left-header{
+
+display:flex;
+
+align-items:center;
+
+gap:18px;
+
+}
+.back-btn{
+
+width:45px;
+
+height:45px;
+
+border:none;
+
+border-radius:50%;
+
+background:white;
+
+color:#0057D9;
+
+font-size:22px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+transition:.3s;
+
+box-shadow:0 4px 12px rgba(0,0,0,.15);
+
+}
+
+.back-btn:hover{
+
+transform:translateX(-4px);
+
+background:#00C896;
+
+color:white;
+
+}
+
+.user-info img{
+
+width:45px;
+
+height:45px;
+
+}
+
+.bubble{
+
+max-width:85%;
+
+}
+
+.header-actions button{
+
+width:36px;
+
+height:36px;
+
+font-size:16px;
+
+}
+
+.message-box{
+
+padding:12px;
+
+}
+
+.message-box input{
+
+font-size:14px;
+
+}
+
+.send-btn{
+
+width:46px;
+
+height:46px;
+
+}
+
+}

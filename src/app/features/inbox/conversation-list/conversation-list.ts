@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-
+import { Router, RouterLink } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { ChatService } from '../services/chat.service';
 import { Conversation } from '../models/conversation';
 
@@ -9,24 +9,52 @@ import { Conversation } from '../models/conversation';
   selector: 'app-conversation-list',
   standalone: true,
   imports: [
-    CommonModule,
-    RouterModule
+    CommonModule
   ],
   templateUrl: './conversation-list.html',
   styleUrls: ['./conversation-list.scss']
 })
-export class ConversationListComponent implements OnInit {
+export class ConversationListComponent
+implements OnInit, OnDestroy {
 
   conversations: Conversation[] = [];
 
+  private subscription!: Subscription;
+
   constructor(
-    private chatService: ChatService
+    private chatService: ChatService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
 
-    this.conversations =
-      this.chatService.getConversations();
+    this.subscription =
+      this.chatService
+        .getConversations()
+        .subscribe(conversations => {
+
+          this.conversations = conversations;
+
+        });
+
+  }
+
+  openConversation(conversation: Conversation): void {
+
+    this.router.navigate([
+      '/dashboard/private-chat',
+      conversation.id
+    ]);
+
+  }
+
+  ngOnDestroy(): void {
+
+    if (this.subscription) {
+
+      this.subscription.unsubscribe();
+
+    }
 
   }
 

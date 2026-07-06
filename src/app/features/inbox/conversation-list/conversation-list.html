@@ -1,39 +1,43 @@
-<div class="conversation-list">
+<div
+    class="conversation"
+    *ngFor="let conversation of conversations"
+    (click)="openConversation(conversation)">
 
-    <div
-        *ngFor="let conversation of conversations"
-        class="conversation-card"
-        [routerLink]="['/dashboard/private-chat', conversation.id]">
+    <img
+        [src]="conversation.avatar"
+        alt="Avatar">
 
-        <img
-            [src]="conversation.avatar"
-            alt="Avatar">
+    <div class="conversation-info">
 
-        <div class="details">
+        <h3>
 
-            <div class="top">
+            {{ conversation.name }}
 
-                <h3>{{ conversation.name }}</h3>
+        </h3>
 
-                <span>{{ conversation.lastTime }}</span>
+        <p>
 
-            </div>
+            {{ conversation.lastMessage }}
 
-            <div class="bottom">
+        </p>
 
-                <p>{{ conversation.lastMessage }}</p>
+    </div>
 
-                <span
-                    *ngIf="conversation.unread > 0"
-                    class="badge">
+    <div class="conversation-meta">
 
-                    {{ conversation.unread }}
+        <small>
 
-                </span>
+            {{ conversation.lastTime }}
 
-            </div>
+        </small>
 
-        </div>
+        <span
+            class="badge"
+            *ngIf="conversation.unread > 0">
+
+            {{ conversation.unread }}
+
+        </span>
 
     </div>
 

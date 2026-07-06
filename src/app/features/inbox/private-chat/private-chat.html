@@ -1,375 +1,332 @@
 <div class="chat-window">
 
-    <!-- ===========================
-         CHAT HEADER
-    ============================ -->
+  <!-- =======================================
+       CHAT HEADER
+  ======================================== -->
 
-    <div class="chat-header">
+  <div class="chat-header">
 
     <div class="left-header">
 
-        <button
-            class="back-btn"
-            (click)="goBack()">
+      <button
+        class="back-btn"
+        (click)="goBack()">
 
-            ←
+        ←
 
-        </button>
+      </button>
 
-        <div class="user-info">
+      <img
+        class="profile"
+        [src]="chatUser.avatar"
+        alt="Profile">
 
-            <img
-                [src]="chatUser.avatar"
-                alt="Profile">
+      <div class="user-info">
 
-            <div>
+        <h2>{{ chatUser.name }}</h2>
 
-                <h2>{{ chatUser.name }}</h2>
+        <small *ngIf="chatUser.online">
 
-                <small *ngIf="chatUser.online && !chatUser.typing">
+          🟢 Online
 
-                    🟢 Online
+        </small>
 
-                </small>
+        <small *ngIf="!chatUser.online">
 
-                <small *ngIf="chatUser.typing">
+          ⚪ Offline
 
-                    ✍ Typing...
+        </small>
 
-                </small>
-
-                <small *ngIf="!chatUser.online">
-
-                    ⚪ Offline
-
-                </small>
-
-            </div>
-
-        </div>
+      </div>
 
     </div>
 
-            <img
-                [src]="chatUser.avatar"
-                alt="Profile">
+    <div class="header-actions">
 
-            <div>
+      <button
+        title="Voice Call"
+        (click)="startVoiceCall()">
 
-                <h2>{{ chatUser.name }}</h2>
+        📞
 
-                <small *ngIf="chatUser.online && !chatUser.typing">
+      </button>
 
-                    🟢 Online
+      <button
+        title="Video Call"
+        (click)="startVideoCall()">
 
-                </small>
+        🎥
 
-                <small *ngIf="chatUser.typing">
+      </button>
 
-                    ✍ Typing...
+      <button
+        title="More"
+        (click)="openMoreMenu()">
 
-                </small>
+        ⋮
 
-                <small *ngIf="!chatUser.online">
-
-                    ⚪ Offline
-
-                </small>
-
-            </div>
-
-        </div>
-
-        <div class="header-actions">
-
-            <button
-                title="Voice Call"
-                (click)="startVoiceCall()">
-
-                📞
-
-            </button>
-
-            <button
-                title="Video Call"
-                (click)="startVideoCall()">
-
-                🎥
-
-            </button>
-
-            <button
-                title="More"
-                (click)="openMoreMenu()">
-
-                ⋮
-
-            </button>
-
-        </div>
+      </button>
 
     </div>
 
-    <!-- ===========================
-         SEARCH BAR
-    ============================ -->
+  </div>
 
-    <div class="search-bar">
+  <!-- =======================================
+       SEARCH BAR
+  ======================================== -->
 
-        <input
+  <div class="search-bar">
 
-            type="text"
+    <input
 
-            placeholder="Search messages..."
+      type="text"
 
-            [(ngModel)]="searchText">
+      placeholder="Search messages..."
 
-    </div>
+      [(ngModel)]="searchText">
 
-    <!-- ===========================
-         CHAT AREA
-    ============================ -->
+  </div>
 
-    <div
-        class="messages"
-        #scrollContainer>
+  <!-- =======================================
+       CHAT BODY
+  ======================================== -->
 
-        <div
-
-            *ngFor="let msg of filteredMessages"
-
-            class="message-row"
-
-            [class.mine]="msg.mine">
-
-            <!-- Incoming Avatar -->
-
-            <img
-
-                *ngIf="!msg.mine"
-
-                class="avatar"
-
-                [src]="chatUser.avatar"
-
-                alt="Avatar">
-
-            <!-- Message Bubble -->
-
-            <div
-
-                class="bubble"
-
-                [class.mine]="msg.mine">
-
-                <!-- Image -->
-
-                <img
-
-                    *ngIf="msg.image"
-
-                    class="message-image"
-
-                    [src]="msg.image"
-
-                    alt="Shared Image">
-
-                <!-- Message -->
-
-                <p>
-
-                    {{ msg.message }}
-
-                </p>
-
-                <!-- Footer -->
-
-                <div class="message-footer">
-
-                    <small>
-
-                        {{ msg.time }}
-
-                    </small>
-
-                    <span
-                        *ngIf="msg.mine">
-
-                        {{ msg.status }}
-
-                    </span>
-
-                </div>
-
-                <!-- Reaction -->
-
-                <div
-
-                    class="reaction-display"
-
-                    *ngIf="msg.reaction">
-
-                    {{ msg.reaction }}
-
-                </div>
-
-                <!-- Reactions -->
-
-                <div class="reaction-buttons">
-
-                    <button
-                        (click)="react(msg,'👍')">
-
-                        👍
-
-                    </button>
-
-                    <button
-                        (click)="react(msg,'❤️')">
-
-                        ❤️
-
-                    </button>
-
-                    <button
-                        (click)="react(msg,'😂')">
-
-                        😂
-
-                    </button>
-
-                    <button
-                        (click)="react(msg,'🔥')">
-
-                        🔥
-
-                    </button>
-
-                </div>
-
-                <!-- Own Message Actions -->
-
-                <div
-
-                    class="message-actions"
-
-                    *ngIf="msg.mine">
-
-                    <button
-                        (click)="editMessage(msg)">
-
-                        ✏ Edit
-
-                    </button>
-
-                    <button
-                        (click)="deleteMessage(msg.id)">
-
-                        🗑 Delete
-
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- ===========================
-         IMAGE PREVIEW
-    ============================ -->
+  <div
+    class="messages"
+    #scrollContainer>
 
     <div
 
-        class="image-preview"
+      *ngFor="let msg of filteredMessages"
 
-        *ngIf="selectedImage">
+      class="message-row"
+
+      [class.mine]="msg.mine">
+
+      <!-- Avatar -->
+
+      <img
+
+        *ngIf="!msg.mine"
+
+        class="avatar"
+
+        [src]="chatUser.avatar"
+
+        alt="Avatar">
+
+      <!-- Bubble -->
+
+      <div
+
+        class="bubble"
+
+        [class.mine]="msg.mine">
+
+        <!-- Image -->
 
         <img
 
-            [src]="selectedImage"
+          *ngIf="msg.image"
 
-            alt="Preview">
+          class="message-image"
 
-        <button
+          [src]="msg.image"
 
-            (click)="removeSelectedImage()">
+          alt="Shared Image">
 
-            ✖ Remove
+        <!-- Message -->
 
-        </button>
+        <p>
+
+          {{ msg.message }}
+
+        </p>
+
+        <!-- Footer -->
+
+        <div class="message-footer">
+
+          <small>
+
+            {{ msg.time }}
+
+          </small>
+
+          <span *ngIf="msg.mine">
+
+            {{ msg.status }}
+
+          </span>
+
+        </div>
+
+        <!-- Reaction -->
+
+        <div
+
+          *ngIf="msg.reaction"
+
+          class="reaction-display">
+
+          {{ msg.reaction }}
+
+        </div>
+
+        <!-- Emoji Reactions -->
+
+        <div class="reaction-buttons">
+
+          <button (click)="react(msg,'👍')">
+
+            👍
+
+          </button>
+
+          <button (click)="react(msg,'❤️')">
+
+            ❤️
+
+          </button>
+
+          <button (click)="react(msg,'😂')">
+
+            😂
+
+          </button>
+
+          <button (click)="react(msg,'🔥')">
+
+            🔥
+
+          </button>
+
+        </div>
+
+        <!-- Edit/Delete -->
+
+        <div
+
+          *ngIf="msg.mine"
+
+          class="message-actions">
+
+          <button
+            (click)="editMessage(msg)">
+
+            ✏ Edit
+
+          </button>
+
+          <button
+            (click)="deleteMessage(msg.id)">
+
+            🗑 Delete
+
+          </button>
+
+        </div>
+
+      </div>
 
     </div>
 
-    <!-- ===========================
-         EMOJI BAR
-    ============================ -->
+  </div>
 
-    <div class="emoji-bar">
+  <!-- =======================================
+       IMAGE PREVIEW
+  ======================================== -->
 
-        <button
+  <div
 
-            *ngFor="let emoji of emojis"
+    *ngIf="selectedImage"
 
-            (click)="addEmoji(emoji)">
+    class="image-preview">
 
-            {{ emoji }}
+    <img
 
-        </button>
+      [src]="selectedImage"
 
-    </div>
+      alt="Preview">
 
-    <!-- ===========================
-         MESSAGE INPUT
-    ============================ -->
+    <button
 
-    <div class="message-box">
+      (click)="removeSelectedImage()">
 
-        <!-- Attachment -->
+      ✖ Remove
 
-        <label class="attachment">
+    </button>
 
-            📎
+  </div>
 
-            <input
+  <!-- =======================================
+       EMOJI BAR
+  ======================================== -->
 
-                hidden
+  <div class="emoji-bar">
 
-                type="file"
+    <button
 
-                accept="image/*"
+      *ngFor="let emoji of emojis"
 
-                (change)="onImageSelected($event)">
+      (click)="addEmoji(emoji)">
 
-        </label>
+      {{ emoji }}
 
-        <!-- Input -->
+    </button>
 
-        <input
+  </div>
 
-            type="text"
+  <!-- =======================================
+       MESSAGE INPUT
+  ======================================== -->
 
-            placeholder="Type a message..."
+  <div class="message-box">
 
-            [(ngModel)]="newMessage"
+    <!-- Attachment -->
 
-            (keyup)="onTyping()"
+    <label class="attachment">
 
-            (keyup.enter)="sendMessage()">
+      📎
 
-        <!-- Send -->
+      <input
 
-        <button
+        hidden
 
-            class="send-btn"
+        type="file"
 
-            (click)="sendMessage()">
+        accept="image/*"
 
-            ➤
+        (change)="onImageSelected($event)">
 
-        </button>
+    </label>
 
-    </div>
+    <!-- Input -->
 
+    <input
+
+      type="text"
+
+      placeholder="Type your message..."
+
+      [(ngModel)]="newMessage"
+
+      (keyup)="onTyping()"
+
+      (keyup.enter)="sendMessage()">
+
+    <!-- Send -->
+
+    <button
+
+      class="send-btn"
+
+      (click)="sendMessage()">
+
+      ➤
+
+    </button>
+
+  </div>
+
+</div>

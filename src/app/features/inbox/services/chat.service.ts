@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { ChatMessage } from '../models/chat-message';
 import { Conversation } from '../models/conversation';
 
@@ -44,6 +45,11 @@ export class ChatService {
     }
 
   ];
+  private conversationsSubject =
+  new BehaviorSubject<Conversation[]>(this.conversations);
+
+conversations$ =
+  this.conversationsSubject.asObservable();
 
   // ============================================
   // CHAT MESSAGES
@@ -76,18 +82,93 @@ export class ChatService {
   ];
 
   // ============================================
-  // CONVERSATIONS
+  // AUTOMATIC REPLIES
   // ============================================
 
-  getConversations(): Conversation[] {
+  private autoReplies: string[] = [
 
-    return this.conversations;
+    'Hello Caleb 👋',
+
+    'That sounds great!',
+
+    'Nice work 👍',
+
+    'Perfect.',
+
+    'I completely agree.',
+
+    'Thank you for the update.',
+
+    'See you shortly.',
+
+    'Okay 😊',
+
+    'No problem.',
+
+    'Let us discuss it tomorrow.',
+
+    'Can you explain further?',
+
+    'Awesome!'
+
+  ];
+
+  // ============================================
+  // TYPING STATUS
+  // ============================================
+
+  private typing = false;
+
+  isTyping(): boolean {
+
+    return this.typing;
 
   }
 
+  startTyping(): void {
+
+    this.typing = true;
+
+  }
+
+  stopTyping(): void {
+
+    this.typing = false;
+
+  }
+
+  // ============================================
+  // RANDOM REPLY
+  // ============================================
+
+  private getRandomReply(): string {
+
+    const index = Math.floor(
+
+      Math.random() * this.autoReplies.length
+
+    );
+
+    return this.autoReplies[index];
+
+  }
+
+  // ============================================
+  // CONVERSATIONS
+  // ============================================
+
+  getConversations() {
+
+    return this.conversations$;
+
+}
   getConversation(id: number): Conversation | undefined {
 
-    return this.conversations.find(c => c.id === id);
+    return this.conversations.find(
+
+      conversation => conversation.id === id
+
+    );
 
   }
 
@@ -106,33 +187,131 @@ export class ChatService {
     return this.messages.filter(message =>
 
       message.senderId === userId ||
+
       message.receiverId === userId
 
     );
 
   }
 
+  // ============================================
+  // SEND MESSAGE
+  // ============================================
+
   sendMessage(message: ChatMessage): void {
 
     this.messages.push(message);
 
-    const conversation =
-      this.conversations.find(c => c.id === message.receiverId);
+    const conversation = this.conversations.find(
+
+      conversation => conversation.id === message.receiverId
+
+    );
 
     if (conversation) {
 
-      conversation.lastMessage = message.message;
+    conversation.lastMessage = message.message;
 
-      conversation.lastTime = message.time;
+    conversation.lastTime = message.time;
 
-    }
+}
+
+this.conversationsSubject.next(
+    [...this.conversations]
+);
+
+    // Simulate message status
+
+    setTimeout(() => {
+
+      message.status = 'Delivered';
+
+    }, 1000);
+
+    setTimeout(() => {
+
+      message.status = 'Read';
+
+    }, 2500);
 
   }
 
+  // ============================================
+  // AUTOMATIC REPLY
+  // ============================================
+
+  simulateReply(receiverId: number): void {
+
+    const conversation = this.getConversation(receiverId);
+
+    if (!conversation) {
+
+      return;
+
+    }
+
+    // Show typing indicator
+
+    this.startTyping();
+
+    setTimeout(() => {
+
+      this.stopTyping();
+
+      const replyText = this.getRandomReply();
+
+      const reply: ChatMessage = {
+
+        id: Date.now(),
+
+        senderId: receiverId,
+
+        receiverId: 1,
+
+        senderName: conversation.name,
+
+        message: replyText,
+
+        time: new Date().toLocaleTimeString([], {
+
+          hour: '2-digit',
+
+          minute: '2-digit'
+
+        }),
+
+        mine: false,
+
+        status: 'Read'
+
+      };
+
+      this.messages.push(reply);
+
+      conversation.lastMessage = reply.message;
+
+      conversation.lastTime = reply.time;
+
+      conversation.unread++;
+
+    }, 2500);
+
+  }
+
+  // ============================================
+  // EDIT MESSAGE
+  // ============================================
+
   editMessage(id: number, text: string): void {
 
-    const message =
-      this.messages.find(message => message.id === id);
+    const message = this.messages.find(
+
+      message => message.id === id
+
+    );
+    this.conversationsSubject.next(
+    [...this.conversations]
+);
 
     if (message) {
 
@@ -142,10 +321,36 @@ export class ChatService {
 
   }
 
-  deleteMessage(id: number): void {
+  // ============================================
+  // DELETE MESSAGE
+  // ============================================
+
+  deleteMessage(id:number){
 
     this.messages =
-      this.messages.filter(message => message.id !== id);
+        this.messages.filter(
+            message => message.id !== id
+        );
+
+    this.conversationsSubject.next(
+        [...this.conversations]
+    );
+
+  }
+
+  // ============================================
+  // MARK CONVERSATION AS READ
+  // ============================================
+
+  markConversationAsRead(id: number): void {
+
+    const conversation = this.getConversation(id);
+
+    if (conversation) {
+
+      conversation.unread = 0;
+
+    }
 
   }
 

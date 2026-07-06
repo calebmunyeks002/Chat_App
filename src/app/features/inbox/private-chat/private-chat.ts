@@ -8,6 +8,7 @@ import {
 
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
 import {
   Router,
   ActivatedRoute
@@ -15,6 +16,7 @@ import {
 
 import { ChatService } from '../services/chat.service';
 import { ChatMessage } from '../models/chat-message';
+import { Conversation } from '../models/conversation';
 
 @Component({
   selector: 'app-private-chat',
@@ -26,7 +28,6 @@ import { ChatMessage } from '../models/chat-message';
   templateUrl: './private-chat.html',
   styleUrls: ['./private-chat.scss']
 })
-
 export class PrivateChatComponent
 implements OnInit, AfterViewChecked {
 
@@ -34,33 +35,36 @@ implements OnInit, AfterViewChecked {
   scrollContainer!: ElementRef<HTMLDivElement>;
 
   constructor(
-  private router: Router,
-  private route: ActivatedRoute,
-  private chatService: ChatService
-) {}
+    private router: Router,
+    private route: ActivatedRoute,
+    private chatService: ChatService
+  ) {}
 
-  // ==========================
-  // USER INFORMATION
-  // ==========================
+  // ======================================
+  // CURRENT CHAT USER
+  // ======================================
 
-  chatUser = {
+  chatUser: Conversation = {
 
     id: 1,
 
-    name: 'Kevin Mwangi',
+    name: '',
 
-    online: true,
+    avatar: '',
 
-    typing: false,
+    online: false,
 
-    avatar:
-      'https://i.pravatar.cc/150?img=5'
+    unread: 0,
+
+    lastMessage: '',
+
+    lastTime: ''
 
   };
 
-  // ==========================
+  // ======================================
   // MESSAGE INPUT
-  // ==========================
+  // ======================================
 
   newMessage = '';
 
@@ -70,76 +74,83 @@ implements OnInit, AfterViewChecked {
 
   editingMessageId: number | null = null;
 
-  // ==========================
-  // AVAILABLE EMOJIS
-  // ==========================
+  // ======================================
+  // EMOJIS
+  // ======================================
 
-  emojis: string[] = [
+  emojis = [
+
     '😀',
+
     '😁',
+
     '😂',
+
     '🤣',
+
     '😍',
+
     '😎',
+
     '🥳',
+
     '👍',
+
     '👏',
+
     '🔥',
+
     '❤️',
+
     '🎉'
+
   ];
 
-  // ==========================
-  // CHAT HISTORY
-  // ==========================
+  // ======================================
+  // CHAT MESSAGES
+  // ======================================
 
   messages: ChatMessage[] = [];
 
-  // ==========================
-  // INITIALIZATION
-  // ==========================
+  // ======================================
+  // INITIALIZE
+  // ======================================
 
   ngOnInit(): void {
 
-  const id = Number(
-    this.route.snapshot.paramMap.get('id')
-  );
+    const id = Number(
+      this.route.snapshot.paramMap.get('id')
+    );
 
-  const conversation =
-    this.chatService.getConversation(id);
+    const conversation =
+      this.chatService.getConversation(id);
 
-  if (conversation) {
+    if (conversation) {
 
-    this.chatUser = {
+      this.chatUser = {
 
-      id: conversation.id,
+        ...conversation
 
-      name: conversation.name,
+      };
 
-      online: conversation.online,
+    }
 
-      typing: false,
-
-      avatar: conversation.avatar
-
-    };
+    this.loadMessages();
 
   }
 
-  this.loadMessages();
-
-}
-
   private loadMessages(): void {
 
-  this.messages =
-    this.chatService.getMessages(this.chatUser.id);
+    this.messages =
+      this.chatService.getMessages(
+        this.chatUser.id
+      );
 
-}
+  }
 
-  // ==========================
+  // ======================================
   // AUTO SCROLL
-  // ==========================
+  // ======================================
 
   ngAfterViewChecked(): void {
 
@@ -152,15 +163,15 @@ implements OnInit, AfterViewChecked {
     try {
 
       this.scrollContainer.nativeElement.scrollTop =
-        this.scrollContainer.nativeElement.scrollHeight;
+      this.scrollContainer.nativeElement.scrollHeight;
 
     } catch {}
 
   }
 
-  // ==========================
-  // BACK TO INBOX
-  // ==========================
+  // ======================================
+  // BACK
+  // ======================================
 
   goBack(): void {
 
@@ -170,54 +181,55 @@ implements OnInit, AfterViewChecked {
 
   }
 
-  // ==========================
-  // SEARCH
-  // ==========================
+  // ======================================
+  // FILTERED MESSAGES
+  // ======================================
 
   get filteredMessages(): ChatMessage[] {
 
     return this.messages.filter(message =>
 
       message.message
-        .toLowerCase()
-        .includes(this.searchText.toLowerCase())
+      .toLowerCase()
+      .includes(
+        this.searchText.toLowerCase()
+      )
 
     );
 
   }
 
-  // ==========================
+  // ======================================
   // TYPING
-  // ==========================
+  // ======================================
 
   onTyping(): void {
 
-    this.chatUser.typing = true;
-
-    setTimeout(() => {
-
-      this.chatUser.typing = false;
-
-    }, 1200);
+    this.chatUser.online = true;
 
   }
 
-  // ==========================
+  // ======================================
   // SEND MESSAGE
-  // ==========================
+  // ======================================
 
   sendMessage(): void {
 
     if (
+
       this.newMessage.trim() === '' &&
       !this.selectedImage
+
     ) {
 
       return;
 
     }
 
-    // Editing an existing message
+    // -----------------------------
+    // EDIT MESSAGE
+    // -----------------------------
+
     if (this.editingMessageId !== null) {
 
       this.chatService.editMessage(
@@ -239,6 +251,10 @@ implements OnInit, AfterViewChecked {
       return;
 
     }
+
+    // -----------------------------
+    // NEW MESSAGE
+    // -----------------------------
 
     const message: ChatMessage = {
 
@@ -276,17 +292,111 @@ implements OnInit, AfterViewChecked {
 
     this.selectedImage = null;
 
+    // Update status automatically
+
+    setTimeout(() => {
+
+      message.status = 'Delivered';
+
+    }, 1000);
+
+    setTimeout(() => {
+
+      message.status = 'Read';
+
+    }, 2500);
+
+    // Simulate reply
+
+    this.simulateReply();
+
   }
 
-  // ==========================
-  // IMAGE ATTACHMENT
-  // ==========================
+  // ======================================
+  // AUTO REPLY
+  // ======================================
+
+  simulateReply(): void {
+
+    this.chatUser.online = true;
+
+    const replies = [
+
+      "That's great 😊",
+
+      "Okay 👍",
+
+      "See you later.",
+
+      "Perfect!",
+
+      "I have received your message.",
+
+      "Let's discuss tomorrow.",
+
+      "Awesome work 👏",
+
+      "Sure."
+
+    ];
+
+    const randomReply =
+
+      replies[
+        Math.floor(Math.random() * replies.length)
+      ];
+
+    setTimeout(() => {
+
+      const reply: ChatMessage = {
+
+        id: Date.now() + 1,
+
+        senderId: this.chatUser.id,
+
+        receiverId: 1,
+
+        senderName: this.chatUser.name,
+
+        message: randomReply,
+
+        time: new Date().toLocaleTimeString([], {
+
+          hour: '2-digit',
+
+          minute: '2-digit'
+
+        }),
+
+        mine: false,
+
+        status: 'Read'
+
+      };
+
+      this.chatService.sendMessage(reply);
+
+      this.loadMessages();
+
+    }, 2500);
+
+  }
+
+  // ======================================
+  // IMAGE
+  // ======================================
 
   onImageSelected(event: Event): void {
 
-    const input = event.target as HTMLInputElement;
+    const input =
+      event.target as HTMLInputElement;
 
-    if (!input.files || input.files.length === 0) {
+    if (
+
+      !input.files ||
+      input.files.length === 0
+
+    ) {
 
       return;
 
@@ -298,7 +408,8 @@ implements OnInit, AfterViewChecked {
 
     reader.onload = () => {
 
-      this.selectedImage = reader.result as string;
+      this.selectedImage =
+        reader.result as string;
 
     };
 
@@ -312,9 +423,9 @@ implements OnInit, AfterViewChecked {
 
   }
 
-  // ==========================
-  // EMOJIS
-  // ==========================
+  // ======================================
+  // EMOJI
+  // ======================================
 
   addEmoji(emoji: string): void {
 
@@ -322,22 +433,25 @@ implements OnInit, AfterViewChecked {
 
   }
 
-  // ==========================
-  // REACTIONS
-  // ==========================
+  // ======================================
+  // REACTION
+  // ======================================
 
   react(
+
     message: ChatMessage,
+
     emoji: string
+
   ): void {
 
     message.reaction = emoji;
 
   }
 
-  // ==========================
-  // DELETE MESSAGE
-  // ==========================
+  // ======================================
+  // DELETE
+  // ======================================
 
   deleteMessage(id: number): void {
 
@@ -347,9 +461,9 @@ implements OnInit, AfterViewChecked {
 
   }
 
-  // ==========================
-  // EDIT MESSAGE
-  // ==========================
+  // ======================================
+  // EDIT
+  // ======================================
 
   editMessage(message: ChatMessage): void {
 
@@ -359,9 +473,9 @@ implements OnInit, AfterViewChecked {
 
   }
 
-  // ==========================
-  // PLACEHOLDER FEATURES
-  // ==========================
+  // ======================================
+  // PLACEHOLDERS
+  // ======================================
 
   startVoiceCall(): void {
 
